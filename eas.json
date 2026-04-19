@@ -15,10 +15,7 @@
     },
     "production": {
       "android": {
-        "buildType": "aab"
-      },
-      "ios": {
-        "credentialsSource": "remote"
+        "buildType": "app-bundle"
       }
     }
   },
@@ -27,11 +24,6 @@
       "android": {
         "serviceAccountKeyPath": "./google-play-key.json",
         "track": "internal"
-      },
-      "ios": {
-        "appleId": "emmanuelsoneuclid10@gmail.com",
-        "ascAppId": "YOUR_APP_STORE_CONNECT_APP_ID",
-        "appleTeamId": "YOUR_APPLE_TEAM_ID"
       }
     }
   }

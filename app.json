@@ -35,7 +35,11 @@
     },
     "extra": {
       "author": "Emmanuel Adutwum",
-      "github": "https://github.com/emmanueladutwum123/quantlab-pro"
-    }
+      "github": "https://github.com/emmanueladutwum123/quantlab-pro",
+      "eas": {
+        "projectId": "d8a04806-5844-46fd-b10d-335f2104b6a3"
+      }
+    },
+    "owner": "emmanuelson123"
   }
 }

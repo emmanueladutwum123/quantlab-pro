@@ -30,7 +30,7 @@
     "web": {
       "favicon": "./assets/favicon.png",
       "bundler": "metro",
-      "output": "static",
+      "output": "single",
       "name": "QuantLab Pro",
       "description": "Institutional-grade quantitative finance calculator"
     },

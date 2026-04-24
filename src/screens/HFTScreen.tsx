@@ -1,8 +1,8 @@
 import React, { useState, useMemo } from 'react'
 import { ScrollView, View, Text, StyleSheet, TouchableOpacity } from 'react-native'
-import Slider from '@react-native-community/slider'
 import { avellanedaStoikov, simulateMMPnL } from '../math/avellanedaStoikov'
 import { Card, MetricRow, Badge } from '../components/Card'
+import { SliderRow } from '../components/SliderInput'
 import { colors, spacing, radius } from '../theme'
 
 const fmt = (n: number, d = 4) => isFinite(n) ? n.toFixed(d) : '—'
@@ -16,8 +16,8 @@ export default function HFTScreen() {
   const [gamma, setGamma] = useState(0.1)
   const [k, setK]         = useState(1.5)
   const [A, setA]         = useState(140)
-  const [tab, setTab]     = useState<'quotes' | 'monte'>('quotes')
-  const [simRan, setSimRan] = useState(false)
+  const [tab, setTab]       = useState<'quotes' | 'monte'>('quotes')
+  const [simSeed, setSimSeed] = useState(0)
 
   const result = useMemo(() =>
     avellanedaStoikov({ S, q, T, t, sigma, gamma, k, A }),
@@ -25,9 +25,9 @@ export default function HFTScreen() {
   )
 
   const sim = useMemo(() => {
-    if (!simRan) return null
+    if (!simSeed) return null
     return simulateMMPnL({ S, q, T, t, sigma, gamma, k, A }, 150, 80)
-  }, [simRan, S, q, T, t, sigma, gamma, k, A])
+  }, [simSeed, S, q, T, t, sigma, gamma, k, A])
 
   const spreadBps = (result.optimal_spread / S * 10000).toFixed(1)
 
@@ -124,8 +124,8 @@ export default function HFTScreen() {
 
       {tab === 'monte' && (
         <>
-          <TouchableOpacity style={styles.simBtn} onPress={() => setSimRan(true)} activeOpacity={0.8}>
-            <Text style={styles.simBtnText}>▶ Run Monte Carlo (150 paths)</Text>
+          <TouchableOpacity style={styles.simBtn} onPress={() => setSimSeed(s => s + 1)} activeOpacity={0.8}>
+            <Text style={styles.simBtnText}>{simSeed === 0 ? '▶ Run Monte Carlo (150 paths)' : '▶ Re-run Simulation'}</Text>
           </TouchableOpacity>
 
           {sim && (
@@ -191,20 +191,6 @@ function MiniChart({ paths }: { paths: number[][] }) {
   )
 }
 
-function SliderRow({ label, value, min, max, step, format, onChange, color }: { label: string; value: number; min: number; max: number; step: number; format: (v: number) => string; onChange: (v: number) => void; color?: string }) {
-  return (
-    <View style={styles.sliderRow}>
-      <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
-        <Text style={styles.sliderLabel}>{label}</Text>
-        <Text style={[styles.sliderValue, color ? { color } : {}]}>{format(value)}</Text>
-      </View>
-      <Slider minimumValue={min} maximumValue={max} step={step} value={value}
-        onValueChange={onChange} style={{ height: 32 }}
-        minimumTrackTintColor={color ?? '#9C27B0'} maximumTrackTintColor={colors.cardBorder}
-        thumbTintColor={color ?? '#9C27B0'} />
-    </View>
-  )
-}
 
 const styles = StyleSheet.create({
   root: { flex: 1, backgroundColor: colors.bg },
@@ -217,9 +203,6 @@ const styles = StyleSheet.create({
   tabActive: { backgroundColor: '#9C27B0' + '22', borderColor: '#9C27B0' },
   tabText: { color: colors.textMuted, fontSize: 12, fontWeight: '600' },
   tabTextActive: { color: '#9C27B0' },
-  sliderRow: { marginBottom: 8 },
-  sliderLabel: { color: colors.textMuted, fontSize: 12 },
-  sliderValue: { color: '#9C27B0', fontSize: 12, fontWeight: '700', fontFamily: 'monospace' },
   quoteRow: { flexDirection: 'row', gap: spacing.sm, alignItems: 'center' },
   quoteBox: { flex: 2, borderWidth: 1, borderRadius: radius.sm, padding: spacing.sm, alignItems: 'center' },
   quoteLabel: { color: colors.textMuted, fontSize: 10, fontWeight: '700', letterSpacing: 1 },

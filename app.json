@@ -23,7 +23,7 @@
         "backgroundColor": "#0a0f1e"
       },
       "package": "com.emmanueladutwum.quantlabpro",
-      "versionCode": 2,
+      "versionCode": 3,
       "edgeToEdgeEnabled": true,
       "predictiveBackGestureEnabled": false
     },

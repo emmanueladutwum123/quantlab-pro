@@ -1,9 +1,9 @@
 import React, { useState, useMemo } from 'react'
 import { ScrollView, View, Text, StyleSheet, TouchableOpacity } from 'react-native'
-import Slider from '@react-native-community/slider'
 import { kellyPositionSize, positionSizeFromRisk, requiredMargin,
          drawdownRecovery, riskRewardAnalysis, INSTRUMENTS } from '../math/mt5Tools'
 import { Card, MetricRow, Badge } from '../components/Card'
+import { SliderRow } from '../components/SliderInput'
 import { colors, spacing, radius } from '../theme'
 
 type Tool = 'kelly' | 'position' | 'rr' | 'drawdown'
@@ -234,20 +234,6 @@ function DrawdownTool() {
   )
 }
 
-function SliderRow({ label, value, min, max, step, format, onChange, color }: { label: string; value: number; min: number; max: number; step: number; format: (v: number) => string; onChange: (v: number) => void; color?: string }) {
-  return (
-    <View style={styles.sliderRow}>
-      <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
-        <Text style={styles.sliderLabel}>{label}</Text>
-        <Text style={[styles.sliderValue, { color: color ?? colors.green }]}>{format(value)}</Text>
-      </View>
-      <Slider minimumValue={min} maximumValue={max} step={step} value={value}
-        onValueChange={onChange} style={{ height: 32 }}
-        minimumTrackTintColor={color ?? colors.green} maximumTrackTintColor={colors.cardBorder}
-        thumbTintColor={color ?? colors.green} />
-    </View>
-  )
-}
 
 const styles = StyleSheet.create({
   root: { flex: 1, backgroundColor: colors.bg },
@@ -261,9 +247,6 @@ const styles = StyleSheet.create({
   toolBtnActive: { backgroundColor: colors.green + '22', borderColor: colors.green },
   toolBtnText: { color: colors.textMuted, fontSize: 12, fontWeight: '600' },
   toolBtnTextActive: { color: colors.green },
-  sliderRow: { marginBottom: 8 },
-  sliderLabel: { color: colors.textMuted, fontSize: 12 },
-  sliderValue: { fontSize: 12, fontWeight: '700', fontFamily: 'monospace' },
   symGrid: { flexDirection: 'row', flexWrap: 'wrap', gap: 8 },
   symBtn: { paddingHorizontal: 12, paddingVertical: 7, borderRadius: radius.sm,
             borderWidth: 1, borderColor: colors.cardBorder },
